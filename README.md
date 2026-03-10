@@ -16,89 +16,89 @@ Users can create accounts and log in securely.
 
 Features:
 
-User registration
+- User registration
 
-Secure login using Spring Security
+- Secure login using Spring Security
 
-Password encryption
+- Password encryption
 
-Role-based access (client / admin)
+- Role-based access (client / admin)
 
 2. User Profile
 
 Each user has a personal profile containing their fitness data.
 
-Information stored in profile:
+Information stored in the profile:
 
-height
+- height
 
-weight
+- weight
 
-age
+- age
 
-activity level
+- activity level
 
-fitness goal (lose weight / build muscle / maintain)
+- fitness goal (lose weight / build muscle / maintain)
 
 Users can:
 
-update their profile
+- update their profile
 
-view recommended plans
+- view recommended plans
 
 3. Personalized Workout Plans
 
 Based on the user profile, the system will suggest basic workout plans.
 
-Examples:
+Examples include:
 
-beginner full body
+- beginner full body
 
-weight loss workout
+- weight loss workout
 
-muscle building program
+- muscle building program
 
 Workout plans include:
 
-exercise list
+- exercise list
 
-number of sets / reps
+- number of sets and repetitions
 
-optional training videos
+- optional training videos
 
 4. Nutrition Plan Recommendations
 
 Users receive simple nutrition recommendations based on their goal.
 
-Examples:
+Examples include:
 
-calorie target
+- calorie target
 
-example daily meals
+- example daily meals
 
-macro distribution suggestions
+- macro distribution suggestions
 
-Admins can create and edit nutrition plans.
+Administrators can create and edit nutrition plans.
 
 5. Workout Video Library
 
-The platform will include a collection of exercise videos uploaded by admins.
+The platform will include a collection of exercise videos uploaded by administrators.
 
 Users can:
 
-browse exercises
+- browse exercises
 
-watch workout demonstrations
+- watch workout demonstrations
 
-follow structured training sessions
+- follow structured training sessions
 
-Admins can:
+Administrators can:
 
-upload videos
+- upload videos
 
-edit workout descriptions
+- edit workout descriptions
 
-organize workouts by category
+- organize workouts by category
 
 6. Subscription System (Premium Content)
 
@@ -106,31 +106,31 @@ Some workout programs and videos will be accessible only through subscription pl
 
 Example subscriptions:
 
-Basic (free workouts)
+- Basic (free workouts)
 
-Premium (full workout library)
+- Premium (full workout library)
 
-Program packages (e.g. 15-session glutes program)
+- Program packages (for example a 15-session glutes program)
 
 Users can:
 
-view available subscriptions
+- view available subscriptions
 
-activate a subscription
+- activate a subscription
 
-access premium workouts
+- access premium workouts
 
 7. Progress Tracking
 
 Users can track their fitness progress.
 
-Examples:
+Examples include:
 
-weight history
+- weight history
 
-completed workouts
+- completed workouts
 
-training streak
+- training streak
 
 This allows users to monitor improvements over time.
 
@@ -140,11 +140,11 @@ Administrators manage the platform.
 
 Admins can:
 
-manage users
+- manage users
 
-add/edit workout plans
+- add or edit workout plans
 
-upload workout videos
+- upload workout videos
 
 create nutrition plans
 
