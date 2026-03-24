@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoFit Register</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 100%;
+            margin: 5px 0;
+            padding: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+    <input type="number" id="height" placeholder="Height">
+    <input type="number" id="weight" placeholder="Weight">
+    <input type="number" id="age" placeholder="Age">
+    <input type="text" id="activity" placeholder="Activity Level">
+    <input type="text" id="goal" placeholder="Goal">
+
+    <button onclick="register()">Register</button>
+</div>
+
+<script>
+    async function register() {
+        const data = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            height: parseFloat(document.getElementById("height").value),
+            weight: parseFloat(document.getElementById("weight").value),
+            age: parseInt(document.getElementById("age").value),
+            activityLevel: document.getElementById("activity").value,
+            goal: document.getElementById("goal").value
+        };
+
+        const response = await fetch("http://localhost:8083/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert("User registered successfully!");
+        } else {
+            alert("Error registering user!");
+        }
+    }
+</script>
+
+</body>
+</html>
