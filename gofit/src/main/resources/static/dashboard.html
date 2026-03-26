@@ -610,7 +610,9 @@
             if (!res.ok) { logout(); return; }
             const u = await res.json();
 
-            document.getElementById("userEmail").innerText = u.email;
+
+            document.getElementById("userEmail").innerText =
+                u.firstName + " " + u.lastName;
             document.getElementById("stat-weight").innerText = u.weight;
             document.getElementById("stat-height").innerText = u.height;
             document.getElementById("stat-bmi").innerText = u.bmi;
@@ -651,13 +653,48 @@
 
             // Profile page
             document.getElementById("profileGrid").innerHTML = `
-                <div class="profile-field"><div class="pf-label">Email</div><div class="pf-value">${u.email}</div></div>
-                <div class="profile-field"><div class="pf-label">Age</div><div class="pf-value">${u.age} years</div></div>
-                <div class="profile-field"><div class="pf-label">Height</div><div class="pf-value">${u.height} cm</div></div>
-                <div class="profile-field"><div class="pf-label">Weight</div><div class="pf-value">${u.weight} kg</div></div>
-                <div class="profile-field"><div class="pf-label">Activity Level</div><div class="pf-value">${u.activityLevel}</div></div>
-                <div class="profile-field"><div class="pf-label">Goal</div><div class="pf-value">${goalText}</div></div>
-            `;
+
+
+    <div class="profile-field">
+        <div class="pf-label">First Name</div>
+        <div class="pf-value">${u.firstName}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Last Name</div>
+        <div class="pf-value">${u.lastName}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Email</div>
+        <div class="pf-value">${u.email}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Age</div>
+        <div class="pf-value">${u.age} years</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Height</div>
+        <div class="pf-value">${u.height} cm</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Weight</div>
+        <div class="pf-value">${u.weight} kg</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Activity Level</div>
+        <div class="pf-value">${u.activityLevel}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Goal</div>
+        <div class="pf-value">${goalText}</div>
+    </div>
+`;
 
         } catch (e) {
             console.error(e);

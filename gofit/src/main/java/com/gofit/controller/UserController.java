@@ -38,8 +38,14 @@ public class UserController {
             double heightM = user.getHeight() / 100.0;
             double bmi = Math.round((user.getWeight() / (heightM * heightM)) * 10.0) / 10.0;
 
-            // Mifflin-St Jeor (estimare fara sex, folosim medie)
-            double bmr = 10 * user.getWeight() + 6.25 * user.getHeight() - 5 * age;
+
+            double bmr;
+
+            if (user.getGender().name().equals("MALE")) {
+                bmr = 10 * user.getWeight() + 6.25 * user.getHeight() - 5 * age + 5;
+            } else {
+                bmr = 10 * user.getWeight() + 6.25 * user.getHeight() - 5 * age - 161;
+            }
 
             double activityMultiplier = switch (user.getActivityLevel()) {
                 case "SEDENTARY" -> 1.2;
@@ -65,8 +71,12 @@ public class UserController {
                     user.getWeight(),
                     user.getActivityLevel(),
                     user.getGoal(),
-                    age, bmi, dailyCalories
-            );
+                    age,
+                    bmi,
+                    dailyCalories,
+                    user.getGender().name(),
+                    user.getFirstName(),
+                    user.getLastName());
 
             return ResponseEntity.ok(profile);
 

@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/gofit.iml" filepath="$PROJECT_DIR$/.idea/gofit.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/GoFit-main.iml" filepath="$PROJECT_DIR$/.idea/GoFit-main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gofit/gofit.iml" filepath="$PROJECT_DIR$/gofit/gofit.iml" />
+>>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
     </modules>
   </component>
 </project>

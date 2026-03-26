@@ -13,10 +13,18 @@ public class User {
     private String email;
     private String password;
 
+
+    private String firstName;
+    private String lastName;
+
     private double height;
     private double weight;
 
     private LocalDate birthDate; // 🔥 folosim asta
+
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     private String activityLevel;
     private String goal;
@@ -67,6 +75,23 @@ public class User {
         this.password = password;
     }
 
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public double getHeight() {
         return height;
     }
@@ -89,6 +114,15 @@ public class User {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public String getActivityLevel() {

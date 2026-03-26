@@ -39,6 +39,8 @@ public class UserServiceImpl implements UserService {
         return user.getEmail(); // 🔥 folosit pentru JWT
     }
 
+
+
     @Override
     public void register(UserDTO dto) {
 
@@ -51,6 +53,10 @@ public class UserServiceImpl implements UserService {
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
 
+
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+
         user.setHeight(dto.getHeight());
         user.setWeight(dto.getWeight());
         user.setBirthDate(dto.getBirthDate());
@@ -58,6 +64,9 @@ public class UserServiceImpl implements UserService {
         user.setActivityLevel(dto.getActivityLevel().name());
         user.setGoal(dto.getGoal().name());
 
+
+        // 🔥 ADAUGĂ ASTA:
+        user.setGender(dto.getGender());
         user.setRole("CLIENT");
 
         userRepository.save(user);

@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import com.gofit.model.ActivityLevel;
 import com.gofit.model.Goal;
 
+import com.gofit.model.Gender;
+
+
 public class UserDTO {
 
     @Email(message = "Invalid email")
@@ -13,6 +16,13 @@ public class UserDTO {
 
     @NotBlank(message = "Password is required")
     private String password;
+
+
+    @NotBlank(message = "First name required")
+    private String firstName;
+
+    @NotBlank(message = "Last name required")
+    private String lastName;
 
     @Min(value = 100, message = "Height too small")
     @Max(value = 250, message = "Height too big")
@@ -24,6 +34,10 @@ public class UserDTO {
 
     @NotNull(message = "Birth date required")
     private LocalDate birthDate;
+
+
+    @NotNull(message = "Gender required")
+    private Gender gender;
 
     @NotNull(message = "Activity level required")
     private ActivityLevel activityLevel;
@@ -49,6 +63,13 @@ public class UserDTO {
         this.password = password;
     }
 
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
     public double getHeight() {
         return height;
     }
@@ -71,6 +92,15 @@ public class UserDTO {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public ActivityLevel getActivityLevel() {

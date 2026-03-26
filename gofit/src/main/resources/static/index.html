@@ -257,6 +257,22 @@
 
             <div class="row">
                 <div class="field">
+<<<<<<< HEAD
+=======
+                    <label>First Name</label>
+                    <input type="text" id="firstName" placeholder="Alexia">
+                    <div class="error-msg" id="firstNameError"></div>
+                </div>
+                <div class="field">
+                    <label>Last Name</label>
+                    <input type="text" id="lastName" placeholder="Cosac">
+                    <div class="error-msg" id="lastNameError"></div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="field">
+>>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
                     <label>Height (cm)</label>
                     <input type="number" id="height" placeholder="175">
                     <div class="error-msg" id="heightError"></div>
@@ -275,6 +291,19 @@
             </div>
 
             <div class="field">
+<<<<<<< HEAD
+=======
+                <label>Gender</label>
+                <select id="gender">
+                    <option value="">Select gender</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                </select>
+                <div class="error-msg" id="genderError"></div>
+            </div>
+
+            <div class="field">
+>>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
                 <label>Activity Level</label>
                 <select id="activity">
                     <option value="">Select activity</option>
@@ -282,7 +311,11 @@
                     <option>LIGHT</option>
                     <option>MODERATE</option>
                     <option>ACTIVE</option>
+<<<<<<< HEAD
                     <option>ATHLETE</option>
+=======
+
+>>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
                 </select>
                 <div class="error-msg" id="activityError"></div>
             </div>
@@ -396,6 +429,10 @@
         const activity  = document.getElementById("activity").value;
         const goal      = document.getElementById("goal").value;
 
+        const gender = document.getElementById("gender").value;
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName  = document.getElementById("lastName").value.trim();
+
         let valid = true;
 
         if (!email || !email.includes("@")) {
@@ -431,9 +468,15 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     email, password,
+
+                    firstName,
+                    lastName,
                     height: parseFloat(height),
                     weight: parseFloat(weight),
-                    birthDate, activityLevel: activity, goal
+                    birthDate, activityLevel: activity, goal,
+                    gender,
+                    targetWeight: parseFloat(weight),
+                    experienceLevel: "BEGINNER"
                 })
             });
 

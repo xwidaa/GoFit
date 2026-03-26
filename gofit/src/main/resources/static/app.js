@@ -14,12 +14,21 @@ async function register() {
     const data = {
         email: document.getElementById("regEmail").value,
         password: document.getElementById("regPassword").value,
-        age: parseInt(document.getElementById("regAge").value),
+
+
         height: parseFloat(document.getElementById("regHeight").value),
         weight: parseFloat(document.getElementById("regWeight").value),
-        activityLevel: "MEDIUM",
-        goal: "FIT"
+
+        // temporar:
+        birthDate: "2000-01-01",
+        gender: "MALE",
+        targetWeight: 70,
+        activityLevel: "MODERATE",
+        goal: "MAINTAIN",
+        experienceLevel: "BEGINNER"
     };
+
+    console.log(data);
 
     const response = await fetch("http://localhost:8083/auth/register", {
         method: "POST",
