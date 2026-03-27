@@ -3,10 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>GoFit Register</title>
-<<<<<<< HEAD
-=======
-
->>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
     <style>
         body {
             font-family: Arial;
@@ -21,7 +17,6 @@
             background: white;
             padding: 30px;
             border-radius: 10px;
-<<<<<<< HEAD
             width: 300px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
@@ -29,7 +24,6 @@
         input {
             width: 100%;
             margin: 5px 0;
-=======
             width: 320px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
@@ -37,7 +31,6 @@
         input, select {
             width: 100%;
             margin: 6px 0;
->>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
             padding: 8px;
         }
 
@@ -48,17 +41,14 @@
             color: white;
             border: none;
             margin-top: 10px;
-<<<<<<< HEAD
         }
     </style>
 </head>
-=======
             cursor: pointer;
         }
     </style>
 </head>
 
->>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
 <body>
 
 <div class="container">
@@ -66,13 +56,7 @@
 
     <input type="email" id="email" placeholder="Email">
     <input type="password" id="password" placeholder="Password">
-<<<<<<< HEAD
-    <input type="number" id="height" placeholder="Height">
-    <input type="number" id="weight" placeholder="Weight">
     <input type="number" id="age" placeholder="Age">
-    <input type="text" id="activity" placeholder="Activity Level">
-    <input type="text" id="goal" placeholder="Goal">
-=======
 
     <input type="date" id="birthDate">
 
@@ -107,7 +91,6 @@
         <option value="INTERMEDIATE">Intermediate</option>
         <option value="ADVANCED">Advanced</option>
     </select>
->>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
 
     <button onclick="register()">Register</button>
 </div>
@@ -117,13 +100,11 @@
         const data = {
             email: document.getElementById("email").value,
             password: document.getElementById("password").value,
-<<<<<<< HEAD
             height: parseFloat(document.getElementById("height").value),
             weight: parseFloat(document.getElementById("weight").value),
             age: parseInt(document.getElementById("age").value),
             activityLevel: document.getElementById("activity").value,
-            goal: document.getElementById("goal").value
-=======
+            goal: document.getElementById("goal").value,
 
             birthDate: document.getElementById("birthDate").value,
             gender: document.getElementById("gender").value,
@@ -135,7 +116,6 @@
             activityLevel: document.getElementById("activity").value,
             goal: document.getElementById("goal").value,
             experienceLevel: document.getElementById("experience").value
->>>>>>> 6368153 (Initial commit: GoFit app with auth, profile, gender and name)
         };
 
         const response = await fetch("http://localhost:8083/auth/register", {
