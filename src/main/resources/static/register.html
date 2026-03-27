@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoFit Register</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+
+            width: 320px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input, select {
+            width: 100%;
+            margin: 6px 0;
+            padding: 8px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            margin-top: 10px;
+
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>Register</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+
+    <input type="date" id="birthDate">
+
+    <select id="gender">
+        <option value="">Select gender</option>
+        <option value="MALE">Male</option>
+        <option value="FEMALE">Female</option>
+    </select>
+
+    <input type="number" id="height" placeholder="Height (cm)">
+    <input type="number" id="weight" placeholder="Weight (kg)">
+    <input type="number" id="targetWeight" placeholder="Target weight (kg)">
+
+    <select id="activity">
+        <option value="">Activity level</option>
+        <option value="SEDENTARY">Sedentary</option>
+        <option value="LIGHT">Light</option>
+        <option value="MODERATE">Moderate</option>
+        <option value="ACTIVE">Active</option>
+    </select>
+
+    <select id="goal">
+        <option value="">Goal</option>
+        <option value="LOSE_WEIGHT">Lose weight</option>
+        <option value="GAIN_MUSCLE">Gain muscle</option>
+        <option value="MAINTAIN">Maintain</option>
+    </select>
+
+    <select id="experience">
+        <option value="">Experience level</option>
+        <option value="BEGINNER">Beginner</option>
+        <option value="INTERMEDIATE">Intermediate</option>
+        <option value="ADVANCED">Advanced</option>
+    </select>
+
+    <button onclick="register()">Register</button>
+</div>
+
+<script>
+    async function register() {
+        const data = {
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+
+
+            birthDate: document.getElementById("birthDate").value,
+            gender: document.getElementById("gender").value,
+
+            height: parseFloat(document.getElementById("height").value),
+            weight: parseFloat(document.getElementById("weight").value),
+            targetWeight: parseFloat(document.getElementById("targetWeight").value),
+
+            activityLevel: document.getElementById("activity").value,
+            goal: document.getElementById("goal").value,
+            experienceLevel: document.getElementById("experience").value
+        };
+
+        const response = await fetch("http://localhost:8083/auth/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        });
+
+        if (response.ok) {
+            alert("User registered successfully!");
+        } else {
+            alert("Error registering user!");
+        }
+    }
+</script>
+
+</body>
+</html>

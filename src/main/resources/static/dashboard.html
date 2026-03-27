@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GoFit — Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0a14;
+            --surface: #1a1224;
+            --surface2: #21172e;
+            --border: #2d1f3d;
+            --accent: #d8a6ff;
+            --accent-dim: #c084fc;
+            --text: #f5ecff;
+            --muted: #b8a7cc;
+            --danger: #ff7aa2;
+            --sidebar-w: 220px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 28px 16px;
+            position: fixed;
+            top: 0; left: 0; bottom: 0;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            letter-spacing: -1px;
+            margin-bottom: 36px;
+            padding-left: 8px;
+        }
+        .logo span { color: var(--accent); }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: all 0.18s;
+            margin-bottom: 4px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+        .nav-item:hover { color: var(--text); background: var(--surface2); }
+        .nav-item.active { color: var(--accent); background: rgba(216,166,255,0.12); }
+        .nav-item .icon { font-size: 1.1rem; width: 20px; text-align: center; }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--danger);
+            font-size: 0.92rem;
+            font-weight: 500;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            transition: background 0.18s;
+        }
+        .logout-btn:hover { background: rgba(255,95,95,0.08); }
+
+        /* ── MAIN ── */
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            padding: 36px 40px;
+            max-width: 1100px;
+        }
+
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+        /* ── HEADER ── */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+        .page-header h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .greeting-sub { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
+
+        /* ── STAT CARDS ── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+            transition: border-color 0.2s;
+        }
+        .stat-card:hover { border-color: #3a3a3a; }
+        .stat-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+        .stat-value {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+        .stat-value.accent { color: var(--accent); }
+        .stat-unit { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+
+        /* ── BMI BAR ── */
+        .bmi-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 16px;
+            letter-spacing: -0.3px;
+        }
+        .bmi-bar-track {
+            height: 10px;
+            border-radius: 99px;
+            background: linear-gradient(to right, #5af5c8 0%, #c8f55a 25%, #f5d05a 50%, #f5905a 75%, #ff5f9e 100%);
+            position: relative;
+            margin-bottom: 8px;
+        }
+        .bmi-marker {
+            width: 14px; height: 14px;
+            background: white;
+            border: 2px solid var(--bg);
+            border-radius: 50%;
+            position: absolute;
+            top: -2px;
+            transform: translateX(-50%);
+            transition: left 0.6s ease;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+        .bmi-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+        .bmi-status {
+            font-size: 0.85rem;
+            margin-top: 10px;
+            color: var(--muted);
+        }
+        .bmi-status strong { color: var(--text); }
+
+        /* ── CALORIES RING ── */
+        .calories-section {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        .ring-wrap { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+        .ring-wrap svg { transform: rotate(-90deg); }
+        .ring-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .ring-center small { font-size: 0.6rem; color: var(--muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+        .calories-info h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+        .calories-info p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+        .goal-badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 99px;
+            background: rgba(216,166,255,0.12);
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 8px;
+            letter-spacing: 0.04em;
+        }
+
+        /* ── WORKOUTS ── */
+        .workouts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .btn-add {
+            padding: 8px 18px;
+            background: var(--accent);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-add:hover { background: var(--accent-dim); }
+
+        .workout-list { display: flex; flex-direction: column; gap: 10px; }
+        .workout-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: border-color 0.2s;
+        }
+        .workout-card:hover { border-color: #3a3a3a; }
+        .workout-icon {
+            width: 42px; height: 42px;
+            background: rgba(216,166,255,0.12);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .workout-info { flex: 1; }
+        .workout-name { font-weight: 600; font-size: 0.95rem; }
+        .workout-meta { font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+        .workout-cals {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        .workout-delete {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .workout-delete:hover { color: var(--danger); background: rgba(255,95,95,0.08); }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+        .empty-state .big { font-size: 2.5rem; margin-bottom: 8px; }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            width: 380px;
+            animation: slideUp 0.25s ease;
+        }
+        @keyframes slideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        .modal h2 { font-family: 'Syne', sans-serif; font-weight: 700; margin-bottom: 20px; }
+
+        .modal label {
+            display: block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--muted);
+            margin-bottom: 5px;
+            margin-top: 12px;
+        }
+        .modal input, .modal select {
+            width: 100%;
+            padding: 10px 12px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .modal input:focus, .modal select:focus { border-color: var(--accent); }
+        .modal select option { background: var(--surface); }
+
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-cancel {
+            flex: 1; padding: 10px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            cursor: pointer;
+            font-family: 'Syne', sans-serif;
+            font-weight: 600;
+        }
+        .btn-cancel:hover { color: var(--text); }
+        .btn-save {
+            flex: 2; padding: 10px;
+            background: var(--accent);
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0a;
+            cursor: pointer;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+        .btn-save:hover { background: var(--accent-dim); }
+
+        /* ── PROFILE PAGE ── */
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .profile-field {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px 20px;
+        }
+        .profile-field .pf-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .profile-field .pf-value {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 1.15rem;
+        }
+
+        /* loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.2s infinite;
+            border-radius: 8px;
+            height: 1.2rem;
+            width: 60%;
+        }
+        @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+    </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+    <div class="logo">Go<span>Fit</span></div>
+
+    <button class="nav-item active" onclick="showPage('overview')" id="nav-overview">
+        <span class="icon">📊</span> Overview
+    </button>
+    <button class="nav-item" onclick="showPage('workouts')" id="nav-workouts">
+        <span class="icon">🏋️</span> Workouts
+    </button>
+    <button class="nav-item" onclick="showPage('profile')" id="nav-profile">
+        <span class="icon">👤</span> Profile
+    </button>
+
+    <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">
+            <span class="icon">🚪</span> Logout
+        </button>
+    </div>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+    <!-- OVERVIEW PAGE -->
+    <div class="page active" id="page-overview">
+        <div class="page-header">
+            <div>
+                <h1 id="greeting">Good morning 👋</h1>
+                <div class="greeting-sub" id="userEmail">Loading...</div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Weight</div>
+                <div class="stat-value accent" id="stat-weight">—</div>
+                <div class="stat-unit">kg</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Height</div>
+                <div class="stat-value" id="stat-height">—</div>
+                <div class="stat-unit">cm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">BMI</div>
+                <div class="stat-value" id="stat-bmi">—</div>
+                <div class="stat-unit" id="stat-bmi-label">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Age</div>
+                <div class="stat-value" id="stat-age">—</div>
+                <div class="stat-unit">years old</div>
+            </div>
+        </div>
+
+        <!-- BMI BAR -->
+        <div class="bmi-section">
+            <div class="section-title">BMI Scale</div>
+            <div class="bmi-bar-track">
+                <div class="bmi-marker" id="bmiMarker" style="left: 0%"></div>
+            </div>
+            <div class="bmi-labels">
+                <span>Underweight</span>
+                <span>Normal</span>
+                <span>Overweight</span>
+                <span>Obese</span>
+            </div>
+            <div class="bmi-status" id="bmiStatus">—</div>
+        </div>
+
+        <!-- CALORIES RING -->
+        <div class="calories-section">
+            <div class="ring-wrap">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#1c1c1c" stroke-width="10"/>
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#d8a6ff" stroke-width="10"
+                            stroke-dasharray="251.2" stroke-dashoffset="251.2"
+                            stroke-linecap="round" id="caloriesRing"/>
+                </svg>
+                <div class="ring-center">
+                    <span id="ringNumber">—</span>
+                    <small>kcal</small>
+                </div>
+            </div>
+            <div class="calories-info">
+                <h3>Daily Calorie Target</h3>
+                <p id="caloriesDesc">Based on your activity level and goal, here's your recommended daily intake.</p>
+                <span class="goal-badge" id="goalBadge">—</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORKOUTS PAGE -->
+    <div class="page" id="page-workouts">
+        <div class="page-header">
+            <div>
+                <h1>Workouts</h1>
+                <div class="greeting-sub">Track your training sessions</div>
+            </div>
+        </div>
+        <div class="workouts-header">
+            <div class="section-title">Recent Sessions</div>
+            <button class="btn-add" onclick="openModal()">+ Add Workout</button>
+        </div>
+        <div class="workout-list" id="workoutList">
+            <div class="empty-state">
+                <div class="big">🏋️</div>
+                Loading workouts...
+            </div>
+        </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+        <div class="page-header">
+            <div>
+                <h1>Profile</h1>
+                <div class="greeting-sub">Your account details</div>
+            </div>
+        </div>
+        <div class="profile-grid" id="profileGrid">
+            <div class="profile-field"><div class="pf-label">Email</div><div class="pf-value skeleton"></div></div>
+            <div class="profile-field"><div class="pf-label">Age</div><div class="pf-value skeleton"></div></div>
+            <div class="profile-field"><div class="pf-label">Height</div><div class="pf-value skeleton"></div></div>
+            <div class="profile-field"><div class="pf-label">Weight</div><div class="pf-value skeleton"></div></div>
+            <div class="profile-field"><div class="pf-label">Activity Level</div><div class="pf-value skeleton"></div></div>
+            <div class="profile-field"><div class="pf-label">Goal</div><div class="pf-value skeleton"></div></div>
+        </div>
+    </div>
+
+</main>
+
+<!-- ADD WORKOUT MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+        <h2>Log Workout</h2>
+        <label>Workout Name</label>
+        <input type="text" id="w-name" placeholder="e.g. Push Day, Morning Run">
+        <label>Type</label>
+        <select id="w-type">
+            <option value="Strength">Strength</option>
+            <option value="Cardio">Cardio</option>
+            <option value="Flexibility">Flexibility</option>
+            <option value="Sports">Sports</option>
+            <option value="Other">Other</option>
+        </select>
+        <label>Duration (minutes)</label>
+        <input type="number" id="w-duration" placeholder="45" min="1">
+        <label>Calories Burned</label>
+        <input type="number" id="w-calories" placeholder="300" min="0">
+        <label>Notes (optional)</label>
+        <input type="text" id="w-notes" placeholder="How did it go?">
+        <div class="modal-actions">
+            <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+            <button class="btn-save" onclick="saveWorkout()">Save</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const API = "http://localhost:8083";
+
+    // ── AUTH GUARD ──
+    const token = localStorage.getItem("token");
+    if (!token) window.location.href = "index.html";
+
+    const headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + token
+    };
+
+    // ── GREETING ──
+    const hour = new Date().getHours();
+    document.getElementById("greeting").innerText =
+        hour < 12 ? "Good morning 👋" :
+        hour < 18 ? "Good afternoon 👋" : "Good evening 👋";
+
+    // ── NAVIGATION ──
+    function showPage(name) {
+        document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+        document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
+        document.getElementById("page-" + name).classList.add("active");
+        document.getElementById("nav-" + name).classList.add("active");
+        if (name === "workouts") loadWorkouts();
+    }
+
+    // ── LOAD USER ──
+    async function loadUser() {
+        try {
+            const res = await fetch(API + "/user/me", { headers });
+            if (!res.ok) { logout(); return; }
+            const u = await res.json();
+
+
+            document.getElementById("userEmail").innerText =
+                u.firstName + " " + u.lastName;
+            document.getElementById("stat-weight").innerText = u.weight;
+            document.getElementById("stat-height").innerText = u.height;
+            document.getElementById("stat-bmi").innerText = u.bmi;
+            document.getElementById("stat-age").innerText = u.age;
+
+            // BMI label & marker
+            const bmiLabel = u.bmi < 18.5 ? "Underweight" :
+                             u.bmi < 25   ? "Normal weight" :
+                             u.bmi < 30   ? "Overweight" : "Obese";
+            document.getElementById("stat-bmi-label").innerText = bmiLabel;
+            document.getElementById("bmiStatus").innerHTML =
+                `Your BMI is <strong>${u.bmi}</strong> — ${bmiLabel}`;
+
+            // BMI bar position: map 10–40 range to 0–100%
+            const pct = Math.min(100, Math.max(0, ((u.bmi - 10) / 30) * 100));
+            document.getElementById("bmiMarker").style.left = pct + "%";
+
+            // Calories ring (animate)
+            document.getElementById("ringNumber").innerText = u.dailyCalories;
+            const goalText = {
+                LOSE_WEIGHT: "Lose Weight 🔥",
+                MAINTAIN: "Maintain 🎯",
+                GAIN_WEIGHT: "Gain Weight 💪",
+                BUILD_MUSCLE: "Build Muscle 🏋️"
+            }[u.goal] || u.goal;
+            document.getElementById("goalBadge").innerText = goalText;
+            document.getElementById("caloriesDesc").innerText =
+                `Based on your ${u.activityLevel.toLowerCase()} activity level and goal.`;
+
+            // Ring animation: offset goes from 251.2 (empty) to 0 (full)
+            // Show relative to a 3000kcal scale
+            const filled = Math.min(1, u.dailyCalories / 3000);
+            const offset = 251.2 * (1 - filled);
+            setTimeout(() => {
+                document.getElementById("caloriesRing").style.transition = "stroke-dashoffset 1s ease";
+                document.getElementById("caloriesRing").style.strokeDashoffset = offset;
+            }, 300);
+
+            // Profile page
+            document.getElementById("profileGrid").innerHTML = `
+    <div class="profile-field">
+        <div class="pf-label">Name</div>
+        <div class="pf-value">${u.firstName} ${u.lastName}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Gender</div>
+        <div class="pf-value">${u.gender}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Email</div>
+        <div class="pf-value">${u.email}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Age</div>
+        <div class="pf-value">${u.age} years</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Height</div>
+        <div class="pf-value">${u.height} cm</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Weight</div>
+        <div class="pf-value">${u.weight} kg</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Activity Level</div>
+        <div class="pf-value">${u.activityLevel}</div>
+    </div>
+
+    <div class="profile-field">
+        <div class="pf-label">Goal</div>
+        <div class="pf-value">${goalText}</div>
+    </div>
+`;
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    // ── LOAD WORKOUTS ──
+    async function loadWorkouts() {
+        try {
+            const res = await fetch(API + "/workouts", { headers });
+            const workouts = await res.json();
+            renderWorkouts(workouts);
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    function renderWorkouts(workouts) {
+        const list = document.getElementById("workoutList");
+        if (!workouts.length) {
+            list.innerHTML = `<div class="empty-state"><div class="big">🏋️</div>No workouts yet. Add your first session!</div>`;
+            return;
+        }
+        const icons = { Strength: "🏋️", Cardio: "🏃", Flexibility: "🧘", Sports: "⚽", Other: "💪" };
+        list.innerHTML = workouts.map(w => `
+            <div class="workout-card">
+                <div class="workout-icon">${icons[w.type] || "💪"}</div>
+                <div class="workout-info">
+                    <div class="workout-name">${w.name}</div>
+                    <div class="workout-meta">${w.type} · ${w.durationMinutes} min · ${w.date}${w.notes ? ' · ' + w.notes : ''}</div>
+                </div>
+                <div class="workout-cals">−${w.caloriesBurned} kcal</div>
+                <button class="workout-delete" onclick="deleteWorkout(${w.id})" title="Delete">✕</button>
+            </div>
+        `).join("");
+    }
+
+    // ── MODAL ──
+    function openModal() {
+        document.getElementById("modalOverlay").classList.add("open");
+    }
+    function closeModal() {
+        document.getElementById("modalOverlay").classList.remove("open");
+    }
+
+    async function saveWorkout() {
+        const name     = document.getElementById("w-name").value.trim();
+        const type     = document.getElementById("w-type").value;
+        const duration = parseInt(document.getElementById("w-duration").value);
+        const calories = parseInt(document.getElementById("w-calories").value);
+        const notes    = document.getElementById("w-notes").value.trim();
+
+        if (!name || !duration || !calories) {
+            alert("Please fill in name, duration and calories.");
+            return;
+        }
+
+        try {
+            const res = await fetch(API + "/workouts", {
+                method: "POST",
+                headers,
+                body: JSON.stringify({ name, type, durationMinutes: duration, caloriesBurned: calories, notes })
+            });
+            if (res.ok) {
+                closeModal();
+                loadWorkouts();
+                // clear fields
+                ["w-name","w-duration","w-calories","w-notes"].forEach(id =>
+                    document.getElementById(id).value = "");
+            } else {
+                alert("Error saving workout.");
+            }
+        } catch (e) {
+            alert("Server error.");
+        }
+    }
+
+    async function deleteWorkout(id) {
+        if (!confirm("Delete this workout?")) return;
+        try {
+            await fetch(API + "/workouts/" + id, { method: "DELETE", headers });
+            loadWorkouts();
+        } catch (e) { alert("Error"); }
+    }
+
+    // ── LOGOUT ──
+    function logout() {
+        localStorage.removeItem("token");
+        window.location.href = "index.html";
+    }
+
+    // ── CLOSE MODAL ON OVERLAY CLICK ──
+    document.getElementById("modalOverlay").addEventListener("click", function(e) {
+        if (e.target === this) closeModal();
+    });
+
+    // ── INIT ──
+    loadUser();
+</script>
+</body>
+</html>
