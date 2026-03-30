@@ -402,6 +402,31 @@
             font-size: 1.15rem;
         }
 
+        .sidebar-footer {
+            margin-top: auto; /* Împinge butonul jos de tot */
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--danger);
+            font-size: 0.92rem;
+            font-weight: 500;
+            border: none;      /* ASTA lipsește probabil */
+            background: none;  /* ȘI ASTA lipsește */
+            width: 100%;
+            text-align: left;
+            transition: background 0.18s;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 95, 95, 0.08); /* Un fundal subtil la hover */
+        }
+
         /* loading skeleton */
         .skeleton {
             background: linear-gradient(90deg, var(--surface) 25%, var(--surface2) 50%, var(--surface) 75%);
@@ -424,7 +449,7 @@
     <button class="nav-item" onclick="window.location.href='dashboard.html?page=overview'">
         <span class="icon">📊</span> Overview
     </button>
-    <button class="nav-item" onclick="window.location.href='dashboard.html?page=workouts'">
+    <button class="nav-item" onclick="window.location.href='workouts.html'">
         <span class="icon">🏋️</span> Workouts
     </button>
     <button class="nav-item active" onclick="window.location.href='nutrition.html'">
