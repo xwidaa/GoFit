@@ -32,30 +32,27 @@ public class UserController {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            // Calculăm vârsta și BMI (le folosim în DTO-ul de mai jos)
             int age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
             double heightM = user.getHeight() / 100.0;
             double bmi = Math.round((user.getWeight() / (heightM * heightM)) * 10.0) / 10.0;
 
-            // AICI FOLOSIM NOUA METODĂ DIN CLASA USER
             int dailyCalories = user.getDailyCalories();
 
-            // Trebuie să construim profilul pe care îl trimitem la Frontend
+            // 🔥 Constructor call matches UserProfileDTO exactly now
             UserProfileDTO profile = new UserProfileDTO(
                     user.getEmail(),
                     user.getHeight(),
                     user.getWeight(),
-                    user.getActivityLevel(),
-                    user.getGoal(),
+                    user.getActivityLevel().name(),
+                    user.getGoal().name(),
                     age,
                     bmi,
-                    dailyCalories, // Valoarea calculată mai sus
+                    dailyCalories,
                     user.getGender().name(),
                     user.getFirstName(),
                     user.getLastName()
             );
 
-            // ACEASTA ESTE LINIA CARE LIPSEA:
             return ResponseEntity.ok(profile);
 
         } catch (Exception e) {

@@ -36,9 +36,17 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO dto) {
         try {
+            // 1. Validate credentials and get the email
             String email = userService.login(dto.getEmail(), dto.getPassword());
-            String token = jwtService.generateToken(email);
-            return ResponseEntity.ok(Map.of("token", token)); // {"token": "eyJ..."}
+
+            // 2. 🔥 FETCH the user from the database to get their role
+            com.gofit.model.User user = userService.findByEmail(email);
+
+            // 3. 🔥 PASS both email AND role to generateToken
+            // This satisfies the "Expected 2 arguments" requirement
+            String token = jwtService.generateToken(email, user.getRole().name());
+
+            return ResponseEntity.ok(Map.of("token", token));
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }

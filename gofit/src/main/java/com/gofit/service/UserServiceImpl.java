@@ -52,22 +52,20 @@ public class UserServiceImpl implements UserService {
 
         user.setEmail(dto.getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-
         user.setHeight(dto.getHeight());
         user.setWeight(dto.getWeight());
         user.setBirthDate(dto.getBirthDate());
 
-        user.setActivityLevel(dto.getActivityLevel().name());
-        user.setGoal(dto.getGoal().name());
-
-
-        // 🔥 ADAUGĂ ASTA:
+        // 🔥 FIX 1 & 2: Remove .name() - pass the Enum objects directly
+        user.setActivityLevel(dto.getActivityLevel());
+        user.setGoal(dto.getGoal());
         user.setGender(dto.getGender());
-        user.setRole("CLIENT");
+
+        // 🔥 FIX 3: Use the Role Enum instead of "CLIENT"
+        // (Assuming you named the enum constant USER or CLIENT in your Role.java)
+        user.setRole(com.gofit.model.Role.USER);
 
         userRepository.save(user);
     }

@@ -44,7 +44,7 @@ public class WorkoutController {
             User user = userRepository.findByEmail(email)
                     .orElseThrow(() -> new RuntimeException("User not found"));
 
-            String userGoal = user.getGoal(); // Ex: LOSE_WEIGHT, BUILD_MUSCLE, etc.
+            String userGoal = user.getGoal().name();
             long userId = user.getId();
 
             // 1. Luăm TOATE exercițiile din baza de date pentru acest Goal specific

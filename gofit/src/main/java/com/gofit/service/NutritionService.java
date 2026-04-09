@@ -30,8 +30,7 @@ public class NutritionService {
         int dailyTarget = user.getDailyCalories();
 
         // Curățăm string-ul pentru a se potrivi cu Enum-ul Goal
-        String goalStr = user.getGoal().toUpperCase().trim().replace(" ", "_");
-        Goal userGoal = Goal.valueOf(goalStr);
+        Goal userGoal = user.getGoal();
 
         for (String day : days) {
             // Generăm un factor de variație pentru a nu avea calorii identice zilnic

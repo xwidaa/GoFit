@@ -613,6 +613,22 @@
             if (!res.ok) { logout(); return; }
             const u = await res.json();
 
+            // Check if the user is an Admin to show the extra sidebar button
+            if (u.role === 'ADMIN') {
+                const sidebar = document.querySelector('.sidebar-footer');
+                // Check if the button already exists to avoid duplicates
+                if (!document.getElementById('nav-admin')) {
+                    const adminBtn = document.createElement('button');
+                    adminBtn.id = 'nav-admin';
+                    adminBtn.className = 'nav-item';
+                    adminBtn.style.color = 'var(--accent)';
+                    adminBtn.innerHTML = '<span class="icon">🛡️</span> Admin Panel';
+                    adminBtn.onclick = () => window.location.href = 'admin_dashboard.html';
+
+                    // Insert it before the logout button
+                    sidebar.prepend(adminBtn);
+                }
+            }
 
             document.getElementById("userEmail").innerText =
                 u.firstName + " " + u.lastName;

@@ -43,8 +43,7 @@ public class NutritionController {
 
             User user = userService.findByEmail(email);
 
-            String cleanedGoal = user.getGoal().toUpperCase().trim().replace(" ", "_");
-            Goal userGoalEnum = Goal.valueOf(cleanedGoal);
+            Goal userGoalEnum = user.getGoal();
 
             List<Meal> allMeals = mealRepository.findByTargetGoal(userGoalEnum);
 

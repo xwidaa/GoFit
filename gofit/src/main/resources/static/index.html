@@ -389,10 +389,22 @@
             if (response.ok) {
                 const data = await response.json();
                 localStorage.setItem("token", data.token);
+
+                // --- SMART REDIRECT LOGIC ---
+                // 1. Decode the JWT (the middle part contains the claims)
+                const payload = JSON.parse(atob(data.token.split('.')[1]));
+
                 btn.innerText = "✓ Success!";
+
                 setTimeout(() => {
-                    window.location.href = "dashboard.html";
+                    // 2. Check the role and redirect accordingly
+                    if (payload.role === 'ADMIN') {
+                        window.location.href = "admin_dashboard.html";
+                    } else {
+                        window.location.href = "dashboard.html";
+                    }
                 }, 600);
+
             } else {
                 const msg = await response.text();
                 document.getElementById("loginError").innerText = msg || "Invalid credentials";
