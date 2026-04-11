@@ -10,4 +10,6 @@ public interface UserService {
     User findByEmail(String email);
 
     void register(UserDTO dto);
+
+    UserDTO getUserDetails(String email);
 }

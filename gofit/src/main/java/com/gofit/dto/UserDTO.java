@@ -45,6 +45,8 @@ public class UserDTO {
     @NotNull(message = "Goal required")
     private Goal goal;
 
+    private String role;
+
     // getters + setters
 
     public String getEmail() {
@@ -117,5 +119,13 @@ public class UserDTO {
 
     public void setGoal(Goal goal) {
         this.goal = goal;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

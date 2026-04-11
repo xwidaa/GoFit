@@ -44,14 +44,29 @@
         .logo span { color: var(--accent); }
 
         .nav-item {
-            display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px;
-            cursor: pointer; color: var(--muted); font-size: 0.92rem; font-weight: 500;
-            transition: all 0.18s; margin-bottom: 4px; border: none; background: none; width: 100%; text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            color: var(--muted);
+            font-size: 0.92rem;
+            font-weight: 500;
+            transition: all 0.18s;
+            margin-bottom: 4px;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
         }
         .nav-item:hover { color: var(--text); background: var(--surface2); }
         .nav-item.active { color: var(--accent); background: rgba(216,166,255,0.12); }
+        .nav-item .icon { font-size: 1.1rem; width: 20px; text-align: center; }
 
-        .sidebar-footer { margin-top: auto; padding-top: 20px; }
+        .sidebar-footer {
+            margin-top: auto;
+        }
 
         /* REPARARE BUTON LOGOUT */
         .logout-btn {
@@ -61,12 +76,23 @@
         }
         .logout-btn:hover { background: rgba(255, 95, 95, 0.08); }
 
-        .main { margin-left: var(--sidebar-w); flex: 1; padding: 36px 40px; max-width: 1200px; }
+        .main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            padding: 36px 40px; /* Padding identic cu dashboard */
+            max-width: 1100px;  /* Redus de la 1200px la 1100px pentru a nu mai părea "întins" */
+            width: calc(100% - var(--sidebar-w));
+        }
         .page-header { margin-bottom: 32px; }
         .page-header h1 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; }
         .greeting-sub { color: var(--muted); font-size: 0.9rem; margin-top: 4px; }
 
-        .workout-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 32px; align-items: start; }
+        .workout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Două coloane egale */
+            gap: 24px;
+            align-items: start;
+        }
         .section-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 16px; }
 
         /* ── VIDEO CARD ── */
@@ -141,7 +167,16 @@
             opacity: 0; /* Ascuns implicit */
             transition: all 0.2s;
         }
+        .admin-link {
+            border: 1px solid rgba(216, 166, 255, 0.2);
+            background: rgba(216, 166, 255, 0.05);
+            transition: all 0.3s ease;
+        }
 
+        .admin-link:hover {
+            background: rgba(216, 166, 255, 0.15) !important;
+            border-color: var(--accent);
+        }
         .workout-card:hover .delete-btn {
             opacity: 1; /* Apare la hover */
             background: rgba(255, 122, 162, 0.2);
@@ -172,6 +207,10 @@
         <span class="icon">👤</span> Profile
     </button>
     <div class="sidebar-footer">
+        <button id="adminBtn" class="nav-item" onclick="window.location.href='admin_dashboard.html'" style="display: none; color: var(--accent); margin-bottom: 10px;">
+            <span class="icon">🛡️</span> Admin Panel
+        </button>
+
         <button class="logout-btn" onclick="logout()">
             <span class="icon">🚪</span> Logout
         </button>
@@ -405,6 +444,21 @@
             console.error("Error deleting workout:", e);
         }
     }
+    async function checkAdminAccess() {
+        try {
+            const res = await fetch(API + "/user/me", { headers });
+            const u = await res.json();
+
+            if (u.role === 'ADMIN' || u.role === 'admin') {
+                document.getElementById("adminBtn").style.display = "flex";
+            }
+        } catch (e) {
+            console.error("Admin check failed", e);
+        }
+    }
+
+    // Apelează funcția
+    checkAdminAccess();
 
     loadRecommended();
     loadWorkouts();

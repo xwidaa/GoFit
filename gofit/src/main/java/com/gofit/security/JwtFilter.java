@@ -32,12 +32,17 @@ public class JwtFilter extends OncePerRequestFilter {
             String token = authHeader.substring(7);
             try {
                 String email = jwtService.extractEmail(token);
-                String role = jwtService.extractRole(token); // We added extractRole to JwtService earlier
+                String role = jwtService.extractRole(token).trim().toUpperCase();; // We added extractRole to JwtService earlier
+                // ... după ce extragi role
+                System.out.println(">>> JWT Token found for: " + email);
+                System.out.println(">>> Extracted Role: [" + role + "]");
 
                 if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                    // We create an authentication object for Spring
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role);
+                    System.out.println(">>> Setting Authority: " + authority.getAuthority());
+
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            email, null, Collections.singletonList(new SimpleGrantedAuthority(role))
+                            email, null, Collections.singletonList(authority)
                     );
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }

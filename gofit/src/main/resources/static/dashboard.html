@@ -91,7 +91,9 @@
             transition: background 0.18s;
         }
         .logout-btn:hover { background: rgba(255,95,95,0.08); }
-
+        .admin-hidden {
+            display: none !important;
+        }
         /* ── MAIN ── */
         .main {
             margin-left: var(--sidebar-w);
@@ -396,6 +398,17 @@
             color: var(--muted);
             margin-bottom: 6px;
         }
+
+        .admin-link {
+            border: 1px solid rgba(216, 166, 255, 0.2);
+            background: rgba(216, 166, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .admin-link:hover {
+            background: rgba(216, 166, 255, 0.15) !important;
+            border-color: var(--accent);
+        }
         .profile-field .pf-value {
             font-family: 'Syne', sans-serif;
             font-weight: 700;
@@ -434,6 +447,10 @@
     </button>
 
     <div class="sidebar-footer">
+        <button id="adminBtn" class="nav-item" onclick="window.location.href='admin_dashboard.html'" style="display: none; color: var(--accent); margin-bottom: 10px;">
+            <span class="icon">🛡️</span> Admin Panel
+        </button>
+
         <button class="logout-btn" onclick="logout()">
             <span class="icon">🚪</span> Logout
         </button>
@@ -611,23 +628,23 @@
         try {
             const res = await fetch(API + "/user/me", { headers });
             if (!res.ok) { logout(); return; }
+
             const u = await res.json();
+            console.log("Obiectul utilizator complet:", u); // Asta ne va arăta TOATE câmpurile în consolă
 
-            // Check if the user is an Admin to show the extra sidebar button
-            if (u.role === 'ADMIN') {
-                const sidebar = document.querySelector('.sidebar-footer');
-                // Check if the button already exists to avoid duplicates
-                if (!document.getElementById('nav-admin')) {
-                    const adminBtn = document.createElement('button');
-                    adminBtn.id = 'nav-admin';
-                    adminBtn.className = 'nav-item';
-                    adminBtn.style.color = 'var(--accent)';
-                    adminBtn.innerHTML = '<span class="icon">🛡️</span> Admin Panel';
-                    adminBtn.onclick = () => window.location.href = 'admin_dashboard.html';
-
-                    // Insert it before the logout button
-                    sidebar.prepend(adminBtn);
+            const adminBtn = document.getElementById("adminBtn");
+            if (adminBtn) {
+                if (u.role && u.role.toString().toUpperCase() === 'ADMIN') {
+                    console.warn("DEBUG: Condiția ADMIN a fost îndeplinită. Afișez butonul...");
+                    adminBtn.style.setProperty('display', 'flex', 'important');
+                    adminBtn.style.visibility = 'visible';
+                    adminBtn.style.opacity = '1';
+                } else {
+                    console.log("DEBUG: Utilizatorul nu este ADMIN, butonul rămâne ascuns.");
+                    adminBtn.style.display = 'none';
                 }
+            } else {
+                console.error("DEBUG: Elementul 'adminBtn' nu a fost găsit în pagină!");
             }
 
             document.getElementById("userEmail").innerText =
@@ -796,6 +813,7 @@
             loadWorkouts();
         } catch (e) { alert("Error"); }
     }
+
 
     // ── LOGOUT ──
     function logout() {

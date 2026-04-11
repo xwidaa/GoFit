@@ -50,7 +50,8 @@ public class UserController {
                     dailyCalories,
                     user.getGender().name(),
                     user.getFirstName(),
-                    user.getLastName()
+                    user.getLastName(),
+                    user.getRole().name() // 🔥 ADAUGĂ ACEASTĂ LINIE LA FINAL
             );
 
             return ResponseEntity.ok(profile);

@@ -12,11 +12,13 @@ public class UserProfileDTO {
     private String gender;
     private String firstName;
     private String lastName;
+    // 1. Adaugă câmpul nou
+    private String role;
 
-    // Standard constructor that matches the UserController call
+    // 2. Actualizează CONSTRUCTORUL (Acum va primi 12 argumente)
     public UserProfileDTO(String email, double height, double weight, String activityLevel,
                           String goal, int age, double bmi, int dailyCalories,
-                          String gender, String firstName, String lastName) {
+                          String gender, String firstName, String lastName, String role) {
         this.email = email;
         this.height = height;
         this.weight = weight;
@@ -28,6 +30,7 @@ public class UserProfileDTO {
         this.gender = gender;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role; // Setează rolul
     }
 
     // Getters and Setters...
@@ -42,4 +45,6 @@ public class UserProfileDTO {
     public String getGender() { return gender; }
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 }

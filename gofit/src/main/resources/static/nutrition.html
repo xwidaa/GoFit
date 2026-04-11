@@ -401,7 +401,16 @@
             font-weight: 700;
             font-size: 1.15rem;
         }
+        .admin-link {
+            border: 1px solid rgba(216, 166, 255, 0.2);
+            background: rgba(216, 166, 255, 0.05);
+            transition: all 0.3s ease;
+        }
 
+        .admin-link:hover {
+            background: rgba(216, 166, 255, 0.15) !important;
+            border-color: var(--accent);
+        }
         .sidebar-footer {
             margin-top: auto; /* Împinge butonul jos de tot */
         }
@@ -460,6 +469,10 @@
     </button>
 
     <div class="sidebar-footer">
+        <button id="adminBtn" class="nav-item" onclick="window.location.href='admin_dashboard.html'" style="display: none; color: var(--accent); margin-bottom: 10px;">
+            <span class="icon">🛡️</span> Admin Panel
+        </button>
+
         <button class="logout-btn" onclick="logout()">
             <span class="icon">🚪</span> Logout
         </button>
@@ -637,6 +650,22 @@
     function closeMealModal() {
         document.getElementById("mealModalOverlay").classList.remove("open");
     }
+
+    async function checkAdminAccess() {
+        try {
+            const res = await fetch(API + "/user/me", { headers });
+            const u = await res.json();
+
+            if (u.role === 'ADMIN' || u.role === 'admin') {
+                document.getElementById("adminBtn").style.display = "flex";
+            }
+        } catch (e) {
+            console.error("Admin check failed", e);
+        }
+    }
+
+    // Apelează funcția
+    checkAdminAccess();
 
     // Pornim încărcarea datelor
     loadNutrition();

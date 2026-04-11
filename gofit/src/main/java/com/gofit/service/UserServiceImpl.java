@@ -75,4 +75,27 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
+
+    @Override
+    public UserDTO getUserDetails(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserDTO dto = new UserDTO();
+        dto.setEmail(user.getEmail());
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setHeight(user.getHeight());
+        dto.setWeight(user.getWeight());
+        dto.setBirthDate(user.getBirthDate());
+        dto.setGender(user.getGender());
+        dto.setActivityLevel(user.getActivityLevel());
+        dto.setGoal(user.getGoal());
+
+        // 🔥 LINIA CRITICĂ: Trimitem rolul către Frontend
+        // Folosim .name() pentru a transforma Enum-ul ROLE în String ("ADMIN" sau "USER")
+        dto.setRole(user.getRole().name());
+
+        return dto;
+    }
 }
