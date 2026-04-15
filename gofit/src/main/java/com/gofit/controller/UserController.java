@@ -1,63 +1,54 @@
 package com.gofit.controller;
 
+import com.gofit.dto.UserDTO;
 import com.gofit.dto.UserProfileDTO;
-import com.gofit.model.User;
-import com.gofit.repository.UserRepository;
-import com.gofit.security.JwtService;
+import com.gofit.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Period;
+import java.security.Principal;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/user") // Am păstrat "/user" conform codului tău
 @CrossOrigin
 public class UserController {
 
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
+    // 1. GET PROFILE (Înlocuiește vechiul /me cu o logică mai curată via Service)
     @GetMapping("/me")
-    public ResponseEntity<?> getMe(@RequestHeader("Authorization") String authHeader) {
+    public ResponseEntity<?> getMe(Principal principal) {
         try {
-            String token = authHeader.replace("Bearer ", "");
-            String email = jwtService.extractEmail(token);
-
-            User user = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("User not found"));
-
-            int age = Period.between(user.getBirthDate(), LocalDate.now()).getYears();
-            double heightM = user.getHeight() / 100.0;
-            double bmi = Math.round((user.getWeight() / (heightM * heightM)) * 10.0) / 10.0;
-
-            int dailyCalories = user.getDailyCalories();
-
-            // 🔥 Constructor call matches UserProfileDTO exactly now
-            UserProfileDTO profile = new UserProfileDTO(
-                    user.getEmail(),
-                    user.getHeight(),
-                    user.getWeight(),
-                    user.getActivityLevel().name(),
-                    user.getGoal().name(),
-                    age,
-                    bmi,
-                    dailyCalories,
-                    user.getGender().name(),
-                    user.getFirstName(),
-                    user.getLastName(),
-                    user.getRole().name() // 🔥 ADAUGĂ ACEASTĂ LINIE LA FINAL
-            );
-
-            return ResponseEntity.ok(profile);
-
+            // Service-ul se va ocupa de calculul BMI, vârstei și caloriilor
+            return ResponseEntity.ok(userService.getUserDetails(principal.getName()));
         } catch (Exception e) {
             return ResponseEntity.status(401).body("Unauthorized: " + e.getMessage());
+        }
+    }
+
+    // 2. UPDATE PROFILE
+    @PutMapping("/profile")
+    public ResponseEntity<?> updateProfile(@RequestBody UserProfileDTO profileDTO, Principal principal) {
+        try {
+            UserDTO updatedUser = userService.updateUserProfile(principal.getName(), profileDTO);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating profile: " + e.getMessage());
+        }
+    }
+
+    // 3. DELETE PROFILE
+    @DeleteMapping("/profile")
+    public ResponseEntity<?> deleteProfile(Principal principal) {
+        try {
+            userService.deleteUser(principal.getName());
+            return ResponseEntity.ok().body("{\"message\": \"Account deleted successfully\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error deleting account: " + e.getMessage());
         }
     }
 }

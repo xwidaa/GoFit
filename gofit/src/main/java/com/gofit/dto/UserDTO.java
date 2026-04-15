@@ -4,9 +4,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import com.gofit.model.ActivityLevel;
 import com.gofit.model.Goal;
-
 import com.gofit.model.Gender;
-
 
 public class UserDTO {
 
@@ -16,7 +14,6 @@ public class UserDTO {
 
     @NotBlank(message = "Password is required")
     private String password;
-
 
     @NotBlank(message = "First name required")
     private String firstName;
@@ -35,7 +32,6 @@ public class UserDTO {
     @NotNull(message = "Birth date required")
     private LocalDate birthDate;
 
-
     @NotNull(message = "Gender required")
     private Gender gender;
 
@@ -47,24 +43,17 @@ public class UserDTO {
 
     private String role;
 
-    // getters + setters
+    // 🔥 Câmpuri noi pentru calcul
+    private int age;
+    private double bmi;
+    private int dailyCalories;
 
-    public String getEmail() {
-        return email;
-    }
+    // Getters and Setters
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -72,60 +61,34 @@ public class UserDTO {
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public double getHeight() {
-        return height;
-    }
+    public double getHeight() { return height; }
+    public void setHeight(double height) { this.height = height; }
 
-    public void setHeight(double height) {
-        this.height = height;
-    }
+    public double getWeight() { return weight; }
+    public void setWeight(double weight) { this.weight = weight; }
 
-    public double getWeight() {
-        return weight;
-    }
+    public LocalDate getBirthDate() { return birthDate; }
+    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
+    public Gender getGender() { return gender; }
+    public void setGender(Gender gender) { this.gender = gender; }
 
-    public LocalDate getBirthDate() {
-        return birthDate;
-    }
+    public ActivityLevel getActivityLevel() { return activityLevel; }
+    public void setActivityLevel(ActivityLevel activityLevel) { this.activityLevel = activityLevel; }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
-    }
+    public Goal getGoal() { return goal; }
+    public void setGoal(Goal goal) { this.goal = goal; }
 
+    public String getRole() { return role; }
+    public void setRole(String role) { this.role = role; }
 
-    public Gender getGender() {
-        return gender;
-    }
+    // 🔥 Getters și Setters noi
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
 
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
+    public double getBmi() { return bmi; }
+    public void setBmi(double bmi) { this.bmi = bmi; }
 
-    public ActivityLevel getActivityLevel() {
-        return activityLevel;
-    }
-
-    public void setActivityLevel(ActivityLevel activityLevel) {
-        this.activityLevel = activityLevel;
-    }
-
-    public Goal getGoal() {
-        return goal;
-    }
-
-    public void setGoal(Goal goal) {
-        this.goal = goal;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+    public int getDailyCalories() { return dailyCalories; }
+    public void setDailyCalories(int dailyCalories) { this.dailyCalories = dailyCalories; }
 }
