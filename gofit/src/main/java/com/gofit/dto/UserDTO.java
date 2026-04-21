@@ -23,11 +23,11 @@ public class UserDTO {
 
     @Min(value = 100, message = "Height too small")
     @Max(value = 250, message = "Height too big")
-    private double height;
+    private Double height; // 🔥 FIX
 
     @Min(value = 30, message = "Weight too small")
     @Max(value = 300, message = "Weight too big")
-    private double weight;
+    private Double weight; // 🔥 FIX
 
     @NotNull(message = "Birth date required")
     private LocalDate birthDate;
@@ -43,12 +43,13 @@ public class UserDTO {
 
     private String role;
 
-    // 🔥 Câmpuri noi pentru calcul
+    // 🔥 Câmpuri pentru calcul
     private int age;
     private double bmi;
     private int dailyCalories;
 
-    // Getters and Setters
+    // 🔹 Getters & Setters
+
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
@@ -61,11 +62,12 @@ public class UserDTO {
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public double getHeight() { return height; }
-    public void setHeight(double height) { this.height = height; }
+    // 🔥 FIXED TYPES
+    public Double getHeight() { return height; }
+    public void setHeight(Double height) { this.height = height; }
 
-    public double getWeight() { return weight; }
-    public void setWeight(double weight) { this.weight = weight; }
+    public Double getWeight() { return weight; }
+    public void setWeight(Double weight) { this.weight = weight; }
 
     public LocalDate getBirthDate() { return birthDate; }
     public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }
@@ -82,7 +84,6 @@ public class UserDTO {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    // 🔥 Getters și Setters noi
     public int getAge() { return age; }
     public void setAge(int age) { this.age = age; }
 

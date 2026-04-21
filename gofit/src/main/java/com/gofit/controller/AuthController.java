@@ -46,7 +46,7 @@ public class AuthController {
             // This satisfies the "Expected 2 arguments" requirement
             String token = jwtService.generateToken(email, user.getRole().name());
 
-            return ResponseEntity.ok(Map.of("token", token));
+            return ResponseEntity.ok(Map.of("token", token,"role", user.getRole().name()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         }

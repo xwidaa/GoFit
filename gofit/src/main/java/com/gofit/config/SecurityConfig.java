@@ -55,11 +55,11 @@ public class SecurityConfig {
                         .requestMatchers("/api/nutrition/**").hasAnyAuthority("USER", "ADMIN", "CLIENT")
 
                         // 3. Admin Specific Routes
-                        .requestMatchers("/admin/**").hasAnyAuthority("ADMIN", "ROLE_ADMIN")
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // 4. User Specific Routes
                         .requestMatchers("/user/me").authenticated()
-                        .requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN", "CLIENT")
+                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 
                         // 5. Secure everything else
                         .anyRequest().authenticated()
