@@ -121,3 +121,5 @@ Admins can:
 - Upload workout videos  
 - Create nutrition plans  
 - Manage subscriptions
+
+### Figma Link: https://www.figma.com/proto/pZbD0b4sk91uIcvCLpK3TE/GoFit?node-id=1-534&p=f&t=XSxHXBRO9sT6rutK-1&scaling=min-zoom&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=1%3A534
