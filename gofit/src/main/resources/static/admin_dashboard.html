@@ -252,6 +252,7 @@
         <th>Email</th>
         <th>Role</th>
         <th>Goal</th>
+        <th>Subscription</th>
         <th>Status</th>
         <th>Actions</th>
     </tr>
@@ -285,7 +286,29 @@
                     <td>${u.firstName} ${u.lastName}</td>
                     <td>${u.email}</td>
                     <td><span class="role-badge">${u.role}</span></td>
-                    <td>${u.goal}</td>
+                    <td>${formatGoal(u.goal)}</td>
+                    <td>
+    <div style="display:flex; flex-direction:column; gap:4px;">
+        
+        <span style="
+            padding:4px 10px;
+            border-radius:20px;
+            font-size:0.7rem;
+            font-weight:700;
+            background:${getPlanColor(u.subscription?.plan)};
+            color:#000;
+            width:fit-content;
+        ">
+            ${u.subscription?.plan || "FREE"}
+        </span>
+
+        <span style="font-size:0.7rem; color:#b8a7cc;">
+            ${formatExpiry(u.subscription?.endDate)}
+        </span>
+
+    </div>
+</td>
+                    
                     <td style="color: #5af5c8;">Active</td>
                     
                     <td>
@@ -311,6 +334,12 @@
         localStorage.removeItem("token");
         window.location.href = "index.html";
     }
+
+    function getPlanColor(plan) {
+    if (plan === "PREMIUM") return "#d8a6ff";
+    if (plan === "BASIC") return "#5af5c8";
+    return "#888";
+}
 
     async function deleteUser(id) {
         if (!confirm("Delete this user?")) return;
@@ -362,6 +391,21 @@
         document.getElementById("editModal").style.display = "none";
     }
 
+    function formatGoal(goal) {
+    if (!goal) return "-";
+
+    return goal
+        .toLowerCase()
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, l => l.toUpperCase());
+}
+
+    function formatExpiry(date) {
+    if (!date) return "No expiration";
+
+    const d = new Date(date);
+    return "Expires: " + d.toLocaleDateString();
+}
     async function saveUser() {
 
         const body = {

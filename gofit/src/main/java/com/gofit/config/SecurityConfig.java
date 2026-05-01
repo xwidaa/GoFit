@@ -51,9 +51,8 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // 2. Workouts & Nutrition (Specific access)
-                        .requestMatchers("/workouts/**").hasAnyAuthority("USER", "ADMIN", "CLIENT")
-                        .requestMatchers("/api/nutrition/**").hasAnyAuthority("USER", "ADMIN", "CLIENT")
-
+                        .requestMatchers("/workouts/**").hasAnyRole("USER", "ADMIN", "CLIENT")
+                        .requestMatchers("/api/nutrition/**").hasAnyRole("USER", "ADMIN", "CLIENT")
                         // 3. Admin Specific Routes
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
@@ -61,7 +60,8 @@ public class SecurityConfig {
                         .requestMatchers("/user/me").authenticated()
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 
-                        // 5. Secure everything else
+
+.requestMatchers("/auth/**").permitAll()                        // 5. Secure everything else
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

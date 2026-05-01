@@ -83,12 +83,223 @@
         .btn-cancel { background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 12px 24px; border-radius: 10px; cursor: pointer; transition: 0.2s; }
         .btn-cancel:hover { color: var(--text); background: var(--surface2); }
 
+        .sub-btn.current {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    cursor: default;
+    opacity: 0.8;
+}
         .profile-actions { display: flex; gap: 12px; margin-top: 20px; justify-content: flex-end; }
 
         /* ── DANGER ZONE ── */
         .danger-card { background: rgba(255, 122, 162, 0.03); border: 1px solid rgba(255, 122, 162, 0.2); border-radius: 20px; padding: 30px; display: flex; justify-content: space-between; align-items: center; margin-top: 40px; }
         .btn-delete { color: var(--danger); background: rgba(255, 122, 162, 0.1); border: 1px solid var(--danger); padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.2s; }
         .btn-delete:hover { background: var(--danger); color: #fff; }
+
+        /* ── SUBSCRIPTION MODAL ── */
+        #subscriptionModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content-sub {
+            background: var(--surface);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 1000px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(216, 166, 255, 0.1);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header-sub {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .modal-header-sub h2 {
+            font-family: 'Syne', sans-serif;
+            margin: 0;
+            font-size: 1.8rem;
+            color: var(--text);
+        }
+
+        .close-btn-sub {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-btn-sub:hover {
+            color: var(--accent);
+        }
+
+        .subscription-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .sub-card {
+            background: var(--surface2);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sub-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(216, 166, 255, 0.15);
+        }
+
+        .sub-card.active {
+            border-color: var(--accent);
+            background: rgba(216, 166, 255, 0.05);
+            box-shadow: 0 0 0 3px rgba(216, 166, 255, 0.1);
+        }
+
+        .sub-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #0f0a14;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: none;
+        }
+
+        .sub-card.active .sub-badge {
+            display: block;
+        }
+
+        .sub-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            margin-top: 12px;
+        }
+
+        .sub-price {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .sub-price-period {
+            color: var(--muted);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        .sub-features {
+            text-align: left;
+            flex: 1;
+            margin-bottom: 24px;
+        }
+
+        .sub-feature {
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub-feature-check {
+            color: #5af5c8;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .sub-feature.unavailable {
+            opacity: 0.5;
+            color: var(--muted);
+        }
+
+        .sub-feature.unavailable .sub-feature-check {
+            color: var(--muted);
+        }
+
+        .sub-btn {
+            background: var(--accent);
+            color: #0f0a14;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-family: 'Syne', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .sub-btn:hover {
+            background: #e6b8ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(216, 166, 255, 0.3);
+        }
+
+        .sub-btn.current {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            cursor: default;
+        }
+
+        .sub-btn.current:hover {
+            background: transparent;
+            transform: none;
+            box-shadow: none;
+        }
+
+        #paymentModal input {
+    width:100%;
+    margin-bottom:10px;
+    padding:10px;
+    border-radius:8px;
+    border:none;
+}
+
+#paymentModal button {
+    width:100%;
+    margin-top:10px;
+}
     </style>
 </head>
 <body>
@@ -99,8 +310,7 @@
     <button class="nav-item" onclick="location.href='workouts.html'">🏋️ Workouts</button>
     <button class="nav-item" onclick="location.href='nutrition.html'">🍎 Nutrition</button>
     <button class="nav-item" onclick="showPage('profile')" id="nav-profile">👤 Profile</button>
-    <button class="nav-item" id="adminBtn" style="display:none;" onclick="location.href='admin_dashboard.html'">
-    🛡️ Admin</button>
+    <button class="nav-item" id="adminBtn" style="display:none;" onclick="location.href='admin_dashboard.html'">🛡️ Admin</button>
     <div class="sidebar-footer">
         <button class="nav-item logout-btn" onclick="logout()">🚪 Logout</button>
     </div>
@@ -159,6 +369,130 @@
     </div>
 </main>
 
+<!-- Subscription Modal -->
+<div id="subscriptionModal">
+    <div class="modal-content-sub">
+        <div class="modal-header-sub">
+            <h2>Choose Your Plan</h2>
+            <button class="close-btn-sub" onclick="closeSubscriptionModal()">&times;</button>
+        </div>
+
+        <div class="subscription-grid">
+            <!-- FREE PLAN -->
+            <div class="sub-card" id="sub-free">
+                <div class="sub-badge">Current Plan</div>
+                <div class="sub-name">Free</div>
+                <div class="sub-price">$0</div>
+                <div class="sub-price-period">Forever</div>
+
+                <div class="sub-features">
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Basic workout tracking</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Limited nutrition plans</span>
+                    </div>
+                    <div class="sub-feature unavailable">
+                        <span class="sub-feature-check">✗</span>
+                        <span>Advanced analytics</span>
+                    </div>
+                    <div class="sub-feature unavailable">
+                        <span class="sub-feature-check">✗</span>
+                        <span>Custom meal plans</span>
+                    </div>
+                    <div class="sub-feature unavailable">
+                        <span class="sub-feature-check">✗</span>
+                        <span>1-on-1 coaching</span>
+                    </div>
+                </div>
+
+                <button class="sub-btn">Upgrade Now</button>
+            </div>
+
+            <!-- BASIC PLAN -->
+            <div class="sub-card" id="sub-basic">
+                <div class="sub-badge">Popular</div>
+                <div class="sub-name">Basic</div>
+                <div class="sub-price">$9.99</div>
+                <div class="sub-price-period">Per Month</div>
+
+                <div class="sub-features">
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>All Free features</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Advanced analytics</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Custom meal plans</span>
+                    </div>
+                    <div class="sub-feature unavailable">
+                        <span class="sub-feature-check">✗</span>
+                        <span>1-on-1 coaching</span>
+                    </div>
+                    <div class="sub-feature unavailable">
+                        <span class="sub-feature-check">✗</span>
+                        <span>Priority support</span>
+                    </div>
+                </div>
+
+                <button class="sub-btn" onclick="upgradePlan('BASIC')">Upgrade Now</button>
+            </div>
+
+            <!-- PREMIUM PLAN -->
+            <div class="sub-card" id="sub-premium">
+                <div class="sub-badge">Best Value</div>
+                <div class="sub-name">Premium</div>
+                <div class="sub-price">$19.99</div>
+                <div class="sub-price-period">Per Month</div>
+
+                <div class="sub-features">
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>All Basic features</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>1-on-1 coaching</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Priority support</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Exclusive content</span>
+                    </div>
+                    <div class="sub-feature">
+                        <span class="sub-feature-check">✓</span>
+                        <span>Early access to new features</span>
+                    </div>
+                </div>
+
+                <button class="sub-btn" onclick="upgradePlan('PREMIUM')">Upgrade Now</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="paymentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:999;">
+    <div style="background:#1a1224; padding:30px; border-radius:12px; width:350px;">
+        <h2>Payment</h2>
+
+        <input id="cardName" placeholder="Cardholder Name">
+        <input id="cardNumber" placeholder="Card Number (fake)">
+        <input id="cardDate" placeholder="MM/YY">
+        <input id="cardCvv" placeholder="CVV">
+
+        <button onclick="confirmPayment()">Pay</button>
+        <button onclick="closePaymentModal()">Cancel</button>
+    </div>
+</div>
+
 <script>
     const API = "http://localhost:8083";
     const token = localStorage.getItem("token");
@@ -167,12 +501,13 @@
     if (!token) window.location.href = "index.html";
     
     if (role === "ADMIN") {
-    document.getElementById("adminBtn").style.display = "flex";
+        document.getElementById("adminBtn").style.display = "flex";
     }
     const headers = { "Content-Type": "application/json", "Authorization": "Bearer " + token };
 
     let isEditMode = false;
     let u = null;
+    let currentSubscription = "FREE";
 
     function showPage(name) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -184,7 +519,6 @@
         const nav = document.getElementById('nav-' + name);
         if(nav) nav.classList.add('active');
 
-        // 🔥 ADAUGĂ ACEASTĂ LINIE: Actualizează URL-ul în browser
         window.history.replaceState({}, document.title, "dashboard.html?page=" + name);
     }
 
@@ -234,6 +568,15 @@
                 <div class="profile-field"><div class="pf-label">Activity</div><div class="pf-value">${u.activityLevel || '—'}</div></div>
                 <div class="profile-field"><div class="pf-label">Goal</div><div class="pf-value">${goalLabels[u.goal] || u.goal || '—'}</div></div>
                 <div class="profile-field"><div class="pf-label">Email</div><div class="pf-value" style="font-size: 1rem;">${u.email}</div></div>
+                <div class="profile-field">
+                    <div class="pf-label">Subscription</div>
+                    <div class="pf-value" id="subPlan">Loading...</div>
+                    <div class="greeting-sub" id="subExpire"></div>
+                    <button onclick="openSubscriptionModal()" 
+                        style="margin-top:10px; padding:8px 16px; border:none; border-radius:8px; background:var(--accent); color:#0f0a14; cursor:pointer; font-weight:700; width:100%;">
+                        Change Plan 🔥
+                    </button>
+                </div>
             `;
         } else {
             grid.innerHTML = `
@@ -267,7 +610,6 @@
     }
 
     async function updateProfile() {
-        // Colectăm datele
         const bodyData = {
             firstName: document.getElementById("edit-fn")?.value || u.firstName,
             lastName: document.getElementById("edit-ln")?.value || u.lastName,
@@ -288,18 +630,10 @@
 
             if (res.ok) {
                 alert("Profile Updated! ✨");
-
-                // --- PASUL CRUCIAL PENTRU REVENIRE LA PROFILE ---
-                isEditMode = false; // Dezactivăm modul de editare
-
-                // Ascundem zona de Save/Cancel și afișăm butonul de Edit Profile
+                isEditMode = false;
                 document.getElementById("editActions").style.display = "none";
                 document.getElementById("editProfileBtn").style.display = "block";
-
-                // Reîncărcăm datele de la server și redesenăm cardurile (fără input-uri)
                 await loadUser();
-                // ------------------------------------------------
-
             } else {
                 alert("Error updating profile.");
             }
@@ -310,26 +644,171 @@
 
     async function deleteAccount() {
         if (confirm("Delete permanently? This cannot be undone.")) {
-            await fetch(API + "/user/profile", { method: "DELETE", headers }); logout();
+            await fetch(API + "/user/profile", { method: "DELETE", headers }); 
+            logout();
         }
     }
 
-    function logout() { localStorage.clear(); window.location.href = "index.html"; }
+    function logout() { 
+        localStorage.clear(); 
+        window.location.href = "index.html"; 
+    }
+
+    function openSubscriptionModal() {
+        document.getElementById("subscriptionModal").style.display = "flex";
+        updateSubscriptionUI();
+    }
+
+    function closeSubscriptionModal() {
+        document.getElementById("subscriptionModal").style.display = "none";
+    }
+
+    function updateSubscriptionUI() {
+    document.querySelectorAll('.sub-card').forEach(card => {
+        card.classList.remove('active');
+    });
+
+    document.querySelectorAll('.sub-btn').forEach(btn => {
+        btn.classList.remove('current');
+        btn.innerText = "Upgrade Now";
+        btn.disabled = false;
+    });
+
+    if (currentSubscription === "FREE") {
+        document.getElementById("sub-free").classList.add('active');
+
+        const btn = document.querySelector("#sub-free .sub-btn");
+        btn.classList.add("current");
+        btn.innerText = "Current Plan";
+        btn.disabled = true;
+    }
+
+    if (currentSubscription === "BASIC") {
+        document.getElementById("sub-basic").classList.add('active');
+
+        const btn = document.querySelector("#sub-basic .sub-btn");
+        btn.classList.add("current");
+        btn.innerText = "Current Plan";
+        btn.disabled = true;
+    }
+
+    if (currentSubscription === "PREMIUM") {
+        document.getElementById("sub-premium").classList.add('active');
+
+        const btn = document.querySelector("#sub-premium .sub-btn");
+        btn.classList.add("current");
+        btn.innerText = "Current Plan";
+        btn.disabled = true;
+    }
+}
+
+    let selectedPlan = null;
+
+    function upgradePlan(plan) {
+    selectedPlan = plan;
+
+    closeSubscriptionModal();
+
+    // 🔥 PRESET VALUES
+    document.getElementById("cardName").value = "John Doe";
+    document.getElementById("cardNumber").value = "4242 4242 4242 4242";
+    document.getElementById("cardDate").value = "12/26";
+    document.getElementById("cardCvv").value = "123";
+
+    document.getElementById("paymentModal").style.display = "flex";
+}
+
+    async function confirmPayment() {
+
+    // 🔥 VALIDARE SIMPLĂ
+    const card = document.getElementById("cardNumber").value;
+
+    if (card.length < 4) {
+        alert("Invalid card");
+        return;
+    }
+
+    // 🔥 SIMULARE LOADING
+    await new Promise(r => setTimeout(r, 1000));
+
+    try {
+        const res = await fetch(API + "/subscription/upgrade", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({ plan: selectedPlan })
+        });
+
+        if (res.ok) {
+            alert("Payment successful 🎉");
+
+            closePaymentModal();
+
+            await loadSubscription();
+            
+
+        } else {
+            alert("Payment failed");
+        }
+
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+function closePaymentModal() {
+    document.getElementById("paymentModal").style.display = "none";
+}
+    async function loadSubscription() {
+    try {
+        const res = await fetch(API + "/subscription/me", { headers });
+
+        if (!res.ok) return;
+
+        const sub = await res.json();
+
+        currentSubscription = sub.plan || "FREE";
+
+        document.getElementById("subPlan").innerText = sub.plan || "FREE";
+
+        if (sub.endDate) {
+            document.getElementById("subExpire").innerText =
+                "Expires: " + sub.endDate;
+        } else {
+            document.getElementById("subExpire").innerText =
+                "No expiration";
+        }
+
+        // 🔥 ASTA TREBUIE SĂ ADAUGI
+        updateSubscriptionUI();
+
+    } catch (e) {
+        console.error("Subscription error:", e);
+    }
+}
 
     async function initDashboard() {
-        await loadUser(); // Așteptăm să se încarce datele (u.firstName, etc.)
-
-        // Citim parametrul "page" din URL (ex: ?page=profile)
+        await loadUser();
+        
         const urlParams = new URLSearchParams(window.location.search);
         const requestedPage = urlParams.get('page');
 
         if (requestedPage === 'profile') {
-            showPage('profile'); // Dacă în URL scrie profile, deschidem profilul
+            showPage('profile');
         } else {
-            showPage('overview'); // Altfel, rămânem pe dashboard
+            showPage('overview');
         }
+
+        await loadSubscription();
     }
+
     initDashboard();
+
+    // Close modal when clicking outside
+    document.getElementById("subscriptionModal").addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSubscriptionModal();
+        }
+    });
 </script>
 </body>
 </html>

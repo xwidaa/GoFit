@@ -3,9 +3,10 @@ package com.gofit.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name = "users") // Good practice to name the table
+@Table(name = "users")
 public class User {
 
     @Id
@@ -25,21 +26,22 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    // Using Enums for consistency (matches your file structure image)
     @Enumerated(EnumType.STRING)
     private ActivityLevel activityLevel;
 
     @Enumerated(EnumType.STRING)
     private Goal goal;
 
-    // Standardized Role
+    // 🔥 AICI ESTE CHEIA
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    private Subscription subscription;
+
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // 🔥 Added for the "Joined" stat in Admin Dashboard
     private LocalDateTime createdAt;
 
-    // Automatically set the date when a user is created
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -61,7 +63,7 @@ public class User {
         this.goal = goal;
     }
 
-    // --- Getters & Setters ---
+    // ───── GETTERS & SETTERS ─────
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -101,6 +103,10 @@ public class User {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
 
+    public Subscription getSubscription() { return subscription; }
+    public void setSubscription(Subscription subscription) { this.subscription = subscription; }
+
+    // 🔥 Calories logic (unchanged)
     public int getDailyCalories() {
         int age = java.time.Period.between(this.birthDate, java.time.LocalDate.now()).getYears();
 

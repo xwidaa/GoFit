@@ -41,9 +41,12 @@ public class JwtFilter extends OncePerRequestFilter {
                     SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role);
                     System.out.println(">>> Setting Authority: " + authority.getAuthority());
 
-                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                            email, null, Collections.singletonList(authority)
-                    );
+                    UsernamePasswordAuthenticationToken authToken =
+    new UsernamePasswordAuthenticationToken(
+        email, null, Collections.singletonList(authority)
+    );
+
+authToken.setDetails(new org.springframework.security.web.authentication.WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             } catch (Exception e) {
